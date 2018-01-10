@@ -21,6 +21,10 @@ export const store = new Vuex.Store({
     },
     DELETE (state, index) {
       state.todos.splice(index, 1)
+    },
+    COMPLETED (state, index) {
+      console.log(index)
+      state.todos[index].completed = !state.todos[index].completed
     }
   },
   actions: {
@@ -32,6 +36,9 @@ export const store = new Vuex.Store({
     },
     changeVisibility ({commit}, newVisibilityValue) {
       commit('CHANGE_VISIBILITY', newVisibilityValue)
+    },
+    changeCompleted ({commit}, index) {
+      commit('COMPLETED', index)
     }
   },
   getters: {
