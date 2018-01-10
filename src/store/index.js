@@ -7,7 +7,8 @@ export const store = new Vuex.Store({
   strict: true,
   state: {
     todos: [],
-    visibility: 'all'
+    visibility: 'all',
+    countLeft: 0
   },
   mutations: {
     ADD_TODO (state, title) {
@@ -25,6 +26,9 @@ export const store = new Vuex.Store({
     COMPLETED (state, index) {
       console.log(index)
       state.todos[index].completed = !state.todos[index].completed
+    },
+    COUNT (state) {
+      state.countLeft++
     }
   },
   actions: {
@@ -39,10 +43,18 @@ export const store = new Vuex.Store({
     },
     changeCompleted ({commit}, index) {
       commit('COMPLETED', index)
+    },
+    countItem (context) {
+      for (let i = 0; i < context.state.todos.length; i++) {
+        if (!context.state.todos[i].completed) {
+          context.commit('COUNT')
+        }
+      }
     }
   },
   getters: {
     todos: state => state.todos,
-    visibility: state => state.visibility
+    visibility: state => state.visibility,
+    countLeft: state => state.countLeft
   }
 })
