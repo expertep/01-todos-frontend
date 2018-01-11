@@ -1,12 +1,12 @@
 <template>
   <div>
-    <p class="is-pulled-left">{{countLeft}}</p>
-    <visibility-input/>
+    <p class="is-pulled-left">{{countItemActive}} items left</p>
+    <visibility-input v-bind:countItemActive="countItemActive"/>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import VisibilityInput from '@/components/VisibilityInput'
 
 export default {
@@ -14,13 +14,20 @@ export default {
     VisibilityInput
   },
   methods: {
-    ...mapActions(['countItem'])
   },
   computed: {
-    ...mapGetters(['countLeft'])
+    ...mapGetters(['todos']),
+    countItemActive () {
+      let count = 0
+      for (let i = 0; i < this.todos.length; i++) {
+        if (!this.todos[i].completed) {
+          count++
+        }
+      }
+      return count
+    }
   },
-  mounted () {
-    this.countItem()
+  created () {
   }
 }
 </script>

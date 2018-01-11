@@ -7,8 +7,7 @@ export const store = new Vuex.Store({
   strict: true,
   state: {
     todos: [],
-    visibility: 'all',
-    countLeft: 0
+    visibility: 'all'
   },
   mutations: {
     ADD_TODO (state, title) {
@@ -20,20 +19,26 @@ export const store = new Vuex.Store({
     CHANGE_VISIBILITY (state, newVisibilityValue) {
       state.visibility = newVisibilityValue
     },
-    DELETE (state, index) {
+    DELETEONE (state, index) {
       state.todos.splice(index, 1)
     },
     COMPLETED (state, index) {
-      console.log(index)
       state.todos[index].completed = !state.todos[index].completed
     },
-    COUNT (state) {
-      state.countLeft++
+    DELETECOMPLETE (state) {
+      for (let i = state.todos.length - 1; i >= 0; i--) {
+        if (state.todos[i].completed) {
+          state.todos.splice(i, 1)
+        }
+      }
     }
   },
   actions: {
-    deleteTodos ({commit}, index) {
-      commit('DELETE', index)
+    deleteTodo ({commit}, index) {
+      commit('DELETEONE', index)
+    },
+    deleteTodosComplete ({commit}) {
+      commit('DELETECOMPLETE')
     },
     addTodo ({commit}, title) {
       commit('ADD_TODO', title)
@@ -43,18 +48,10 @@ export const store = new Vuex.Store({
     },
     changeCompleted ({commit}, index) {
       commit('COMPLETED', index)
-    },
-    countItem (context) {
-      for (let i = 0; i < context.state.todos.length; i++) {
-        if (!context.state.todos[i].completed) {
-          context.commit('COUNT')
-        }
-      }
     }
   },
   getters: {
     todos: state => state.todos,
-    visibility: state => state.visibility,
-    countLeft: state => state.countLeft
+    visibility: state => state.visibility
   }
 })
