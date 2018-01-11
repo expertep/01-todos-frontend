@@ -26,11 +26,13 @@ export default {
   computed: {
     ...mapGetters(['todos']),
     countItemAll () {
-      return this.todos.length
+      if (this.todos) {
+        return this.todos.length
+      } else return 0
     },
     countItemComplete () {
       let count = 0
-      for (let i = 0; i < this.todos.length; i++) {
+      for (let i = 0; this.todos && i < this.todos.length; i++) {
         if (this.todos[i].completed) {
           count++
         }

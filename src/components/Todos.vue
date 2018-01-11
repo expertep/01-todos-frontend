@@ -2,7 +2,7 @@
   <div>
     {{saveTodos}}
     <div class="is-pulled-right">
-      <a @click="deleteTodosComplete()">Clear completed</a>
+      <a @click="deleteTodosComplete()">Clear Completed</a>
     </div>
     <br>
     <br>
@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import { store } from '@/store'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -49,17 +48,7 @@ export default {
     ]),
     saveTodos () {
       localStorage.setItem('todos', JSON.stringify(this.todos))
-    },
-    completedTran: {
-      get: function (index) {
-        return store.state.todos[index].completed
-      },
-      set: function (newValue) {
-        store.dispatch('COMPLETED', newValue)
-      }
     }
-  },
-  created () {
   }
 }
 </script>

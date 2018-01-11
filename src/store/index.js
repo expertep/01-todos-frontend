@@ -11,6 +11,7 @@ export const store = new Vuex.Store({
   },
   mutations: {
     ADD_TODO (state, title) {
+      state.todos = state.todos || []
       state.todos.push({
         title,
         completed: false
