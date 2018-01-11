@@ -22,18 +22,21 @@ export const store = new Vuex.Store({
     DELETEONE (state, index) {
       state.todos.splice(index, 1)
     },
-    COMPLETED (state, index) {
-      state.todos[index].completed = !state.todos[index].completed
-    },
     DELETECOMPLETE (state) {
       for (let i = state.todos.length - 1; i >= 0; i--) {
         if (state.todos[i].completed) {
           state.todos.splice(i, 1)
         }
       }
+    },
+    SETDATA (state, todos) {
+      state.todos = todos
     }
   },
   actions: {
+    setTodos ({commit}, todos) {
+      commit('SETDATA', todos)
+    },
     deleteTodo ({commit}, index) {
       commit('DELETEONE', index)
     },
@@ -45,9 +48,6 @@ export const store = new Vuex.Store({
     },
     changeVisibility ({commit}, newVisibilityValue) {
       commit('CHANGE_VISIBILITY', newVisibilityValue)
-    },
-    changeCompleted ({commit}, index) {
-      commit('COMPLETED', index)
     }
   },
   getters: {

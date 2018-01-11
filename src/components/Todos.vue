@@ -1,9 +1,14 @@
 <template>
   <div>
-    <a @click="deleteTodosComplete()">Clear completed</a>
+    {{saveTodos}}
+    <div class="is-pulled-right">
+      <a @click="deleteTodosComplete()">Clear completed</a>
+    </div>
+    <br>
+    <br>
     <div v-for="(todo, index) in todos" :key="todo.title" v-if="showTodo(todo)">
       <b-field class="is-pulled-left">
-        <b-checkbox size="is-large" @input="changeCompleted(index)">
+        <b-checkbox size="is-large" v-model="todo.completed">
           <strike v-if="todo.completed">{{ todo.title }}</strike>
           <span v-else>{{ todo.title }}</span>
         </b-checkbox>
@@ -15,9 +20,14 @@
 </template>
 
 <script>
+import { store } from '@/store'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  data () {
+    return {
+    }
+  },
   methods: {
     ...mapActions(['deleteTodo',
       'changeCompleted',
@@ -36,7 +46,20 @@ export default {
   computed: {
     ...mapGetters(['todos',
       'visibility'
-    ])
+    ]),
+    saveTodos () {
+      localStorage.setItem('todos', JSON.stringify(this.todos))
+    },
+    completedTran: {
+      get: function (index) {
+        return store.state.todos[index].completed
+      },
+      set: function (newValue) {
+        store.dispatch('COMPLETED', newValue)
+      }
+    }
+  },
+  created () {
   }
 }
 </script>

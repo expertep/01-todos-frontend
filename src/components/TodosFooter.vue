@@ -26,8 +26,6 @@ export default {
       }
       return count
     }
-  },
-  created () {
   }
 }
 </script>
