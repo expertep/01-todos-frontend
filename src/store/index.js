@@ -20,35 +20,41 @@ export const store = new Vuex.Store({
     CHANGE_VISIBILITY (state, newVisibilityValue) {
       state.visibility = newVisibilityValue
     },
-    DELETEONE (state, index) {
+    REMOVE_TODO (state, index) {
       state.todos.splice(index, 1)
     },
-    DELETECOMPLETE (state) {
+    REMOVE_COMPLETED_TODOS (state) {
       for (let i = state.todos.length - 1; i >= 0; i--) {
         if (state.todos[i].completed) {
           state.todos.splice(i, 1)
         }
       }
     },
-    SETDATA (state, todos) {
+    SETTODOS (state, todos) {
       state.todos = todos
     }
   },
   actions: {
     setTodos ({commit}, todos) {
-      commit('SETDATA', todos)
+      commit('SETTODOS', todos)
     },
-    deleteTodo ({commit}, index) {
-      commit('DELETEONE', index)
+    removeTodo ({commit, dispatch}, index) {
+      commit('REMOVE_TODO', index)
+      dispatch('saveTodos')
     },
-    deleteTodosComplete ({commit}) {
-      commit('DELETECOMPLETE')
+    removeCompletedTodos ({commit, dispatch}) {
+      commit('REMOVE_COMPLETED_TODOS')
+      dispatch('saveTodos')
     },
-    addTodo ({commit}, title) {
+    addTodo ({commit, dispatch}, title) {
       commit('ADD_TODO', title)
+      dispatch('saveTodos')
     },
     changeVisibility ({commit}, newVisibilityValue) {
       commit('CHANGE_VISIBILITY', newVisibilityValue)
+    },
+    saveTodos ({state}) {
+      localStorage.setItem('todos', JSON.stringify(state.todos))
     }
   },
   getters: {

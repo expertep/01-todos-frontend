@@ -1,19 +1,18 @@
 <template>
   <div>
-    {{saveTodos}}
     <div class="is-pulled-right" v-show="countItemComplete > 0">
-      <a @click="deleteTodosComplete()">Clear Completed</a>
+      <a @click="removeCompletedTodos()">Clear Completed</a>
     </div>
     <br>
     <br>
     <div v-for="(todo, index) in todos" :key="todo.title" v-if="showTodosVisi(todo)">
       <b-field class="is-pulled-left">
-        <b-checkbox size="is-large" v-model="todo.completed">
+        <b-checkbox size="is-large" v-model="todo.completed" @input="saveTodos()">
           <strike v-if="todo.completed">{{ todo.title }}</strike>
           <span v-else>{{ todo.title }}</span>
         </b-checkbox>
       </b-field>
-      <a class="delete is-pulled-right" @click="deleteTodo(index)"></a>
+      <a class="delete is-pulled-right" @click="removeTodo(index)"></a>
       <div class="is-clearfix"></div>
     </div>
   </div>
@@ -28,9 +27,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['deleteTodo',
-      'changeCompleted',
-      'deleteTodosComplete'
+    ...mapActions(['removeTodo',
+      'removeCompletedTodos',
+      'saveTodos'
     ]),
     showTodosVisi (todo) {
       if (this.visibility !== 'all') {
@@ -54,9 +53,6 @@ export default {
         }
       }
       return count
-    },
-    saveTodos () {
-      localStorage.setItem('todos', JSON.stringify(this.todos))
     }
   }
 }
