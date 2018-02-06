@@ -5,22 +5,25 @@
     </div>
     <br>
     <br>
-    <div v-for="(todo, index) in todos" :key="todo.title" v-if="showTodosVisi(todo)">
-      <b-field class="is-pulled-left">
-        <b-checkbox size="is-large" v-model="todo.completed" @input="saveTodos()">
-          <strike v-if="todo.completed">{{ todo.title }}</strike>
-          <span v-else>{{ todo.title }}</span>
-        </b-checkbox>
-      </b-field>
-      <a class="delete is-pulled-right" @click="removeTodo(index)"></a>
-      <div class="is-clearfix"></div>
-    </div>
+    <ul v-sortable="{ onUpdate: onUpdate }" id="sorting">
+      <div v-for="(todo, index) in todos" :key="todo.title" v-if="showTodosVisi(todo)">
+        <b-field class="is-pulled-left handle">
+          <b-checkbox size="is-large" v-model="todo.completed" @input="saveTodos()">
+            <strike v-if="todo.completed">{{ todo.title }}</strike>
+            <span v-else>{{ todo.title }}</span>
+          </b-checkbox>
+        </b-field>
+        <a class="delete is-pulled-right" @click="removeTodo(index)"></a>
+        <div class="is-clearfix"></div>
+      </div>
+    </ul>
+
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-
+import Sortable from 'sortablejs'
 export default {
   data () {
     return {
@@ -29,7 +32,8 @@ export default {
   methods: {
     ...mapActions(['removeTodo',
       'removeCompletedTodos',
-      'saveTodos'
+      'saveTodos',
+      'onUpdate'
     ]),
     showTodosVisi (todo) {
       if (this.visibility !== 'all') {
@@ -54,6 +58,10 @@ export default {
       }
       return count
     }
+  },
+  mounted () {
+    let table = document.getElementById('sorting')
+    Sortable.create(table, { handle: '.handle', onUpdate: this.onUpdate, animation: 100 })
   }
 }
 </script>
