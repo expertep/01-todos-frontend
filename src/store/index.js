@@ -34,12 +34,13 @@ export const store = new Vuex.Store({
       state.todos = todos
     },
     SORT (state, event) {
-      this.list.splice(event.newIndex, 0, this.list.splice(event.oldIndex, 1)[0])
+      state.todos.splice(event.newIndex, 0, state.todos.splice(event.oldIndex, 1)[0])
     }
   },
   actions: {
-    onUpdate ({commit}, event) {
+    onUpdate ({commit, dispatch}, event) {
       commit('SORT', event)
+      dispatch('saveTodos')
     },
     setTodos ({commit}, todos) {
       commit('SETTODOS', todos)

@@ -5,7 +5,7 @@
     </div>
     <br>
     <br>
-    <ul v-sortable="{ onUpdate: onUpdate }" id="sorting">
+    <div id="sorting">
       <div v-for="(todo, index) in todos" :key="todo.title" v-if="showTodosVisi(todo)">
         <b-field class="is-pulled-left handle">
           <b-checkbox size="is-large" v-model="todo.completed" @input="saveTodos()">
@@ -16,7 +16,7 @@
         <a class="delete is-pulled-right" @click="removeTodo(index)"></a>
         <div class="is-clearfix"></div>
       </div>
-    </ul>
+    </div>
 
   </div>
 </template>
